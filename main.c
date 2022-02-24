@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #define CONTRIBUTOR_NAME_LENGTH 21
 #define PROJECT_NAME_LENGTH 21
@@ -32,13 +33,31 @@ typedef struct
     Role roles[];
 } Project;
 
-char *skills[SKILL_LENGTH];
+char* skills[SKILL_LENGTH];
 
-Contributor *contributors;
-Project *projects;
+Contributor* contributors;
+Project* projects;
 
 int main()
 {
     printf("Hello, World!\n");
+	FILE* fp;
+	fp = fopen(FILENAME, "r");
+
+	if(fp == NULL)
+	{
+		printf("File could not be read.");
+		exit(-1);
+	}
+
+    fscanf(fp, "%d%d%c", NContributors, NProjects);
+	
+
+
+
+	//LINE 1
+	int NContributors; // 1 <= N <= 100000
+	int NProjects;     // 1 <= N <= 100000
+
     return 0;
 }
