@@ -50,14 +50,14 @@ int main()
 		exit(-1);
 	}
 
+    //LINE 1
+    int NContributors; // 1 <= N <= 100000
+    int NProjects;     // 1 <= N <= 100000
     fscanf(fp, "%d%d%c", NContributors, NProjects);
-	
 
+    contributors = (Contributor*) malloc(NContributors);
+    projects = (Project*) malloc(NProject);
 
-
-	//LINE 1
-	int NContributors; // 1 <= N <= 100000
-	int NProjects;     // 1 <= N <= 100000
 
     return 0;
 }
