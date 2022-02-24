@@ -54,7 +54,7 @@ PlannedProject *plannedProjects;
 void printContributors(Contributor *contribs, int NContributors);
 void printProjects(Project *prjts, int NProjects);
 int compareProjects(Project *project1, Project *project2);
-int getContributors(Contributor returnContributors[], Role role);
+int getContributors(Contributor returnContributors[], Role role, PlannedProject plannedProject, int plannedProjectSize);
 void print2file(PlannedProject *plndPrjcts, FILE *fpwrite);
 
 int main()
@@ -123,8 +123,8 @@ int main()
 
     qsort(projects, NProjects, sizeof(Project), (_CoreCrtNonSecureSearchSortCompareFunction) compareProjects);
 
-    printContributors(contributors, NContributors);
-    printProjects(projects, NProjects);
+//    printContributors(contributors, NContributors);
+//    printProjects(projects, NProjects);
 
     plannedProjects = (PlannedProject *) malloc(sizeof(PlannedProject) * NProjects);
 
@@ -143,7 +143,7 @@ int main()
 
             //zoeken we alle contributors (en zetten deze in een array)
             Contributor *returnContributors = (Contributor *) malloc(sizeof(Contributor) * NContributors);
-            int size = getContributors(returnContributors, role);
+            int size = getContributors(returnContributors, role, plannedProject, j);
 
             if (!size)
             {
@@ -213,7 +213,7 @@ int compareProjects(Project *project1, Project *project2)
     return 0;
 }
 
-int getContributors(Contributor *returnContributors, Role role)
+int getContributors(Contributor *returnContributors, Role role, PlannedProject plannedProject, int plannedProjectSize)
 {
     int length = 0;
 
@@ -225,7 +225,13 @@ int getContributors(Contributor *returnContributors, Role role)
             if (!strcmp(contributor.skills[j].name, role.skillName) &&
                 contributor.skills[j].level >= role.requiredLevel)
             {
-                returnContributors[length++] = contributor;
+                char able = 1;
+                for (int k = 0; k < plannedProjectSize && able; ++k)
+                    if (!strcmp(plannedProject.contributors[k].name, contributor.name))
+                        able = 0;
+
+                if (able)
+                    returnContributors[length++] = contributor;
             }
         }
     }
