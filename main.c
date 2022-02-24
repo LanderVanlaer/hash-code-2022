@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -30,13 +32,14 @@ typedef struct
     int score;
     int bestBeforeDays;
     int rolesSize;
-    Role roles[];
+    Role *roles;
 } Project;
 
 Contributor *contributors;
 Project *projects;
 
 void printContributors(Contributor *contribs, int NContributors);
+void printProjects(Project *prjts, int NProjects);
 
 int main()
 {
@@ -57,7 +60,6 @@ int main()
     contributors = (Contributor *) malloc(sizeof(Contributor) * NContributors);
     projects = (Project *) malloc(sizeof(Project) * NProjects);
 
-
     for (int i = 0; i < NContributors; ++i)
     {
         Contributor contributor;
@@ -76,7 +78,27 @@ int main()
         contributors[i] = contributor;
     }
 
+    for (int i = 0; i < NProjects; ++i)
+    {
+        Project project;
+        fscanf(fp, "%s%d%d%d%d%*c", project.name, &project.numberOfDaysToComplete, &project.score,
+               &project.bestBeforeDays,
+               &project.rolesSize);
+
+        project.roles = (Role *) malloc(sizeof(Role) * project.rolesSize);
+
+        for (int j = 0; j < project.rolesSize; ++j)
+        {
+            Role role;
+            fscanf(fp, "%s%d%*c", role.skillName, &role.requiredLevel);
+            project.roles[j] = role;
+        }
+        projects[i] = project;
+    }
+
+
     printContributors(contributors, NContributors);
+    printProjects(projects, NProjects);
     return 0;
 }
 
@@ -92,3 +114,17 @@ void printContributors(Contributor *contribs, int NContributors)
         printf("\n");
     }
 }
+
+void printProjects(Project *prjts, int NProjects)
+{
+    for (int i = 0; i < NProjects; ++i)
+    {
+        printf("%s\n", prjts[i].name);
+        for (int j = 0; j < prjts[i].rolesSize; ++j)
+        {
+            printf("-> %s %d\n", prjts[i].roles[j].skillName, prjts[i].roles[j].requiredLevel);
+        }
+        printf("\n");
+    }
+}
+
