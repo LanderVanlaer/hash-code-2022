@@ -101,6 +101,8 @@ int main()
 
     printContributors(contributors, NContributors);
     printProjects(projects, NProjects);
+
+
     return 0;
 }
 
@@ -121,7 +123,7 @@ void printProjects(Project *prjts, int NProjects)
 {
     for (int i = 0; i < NProjects; ++i)
     {
-        printf("%s | Best Before: %d\n", prjts[i].name, prjts[i].bestBeforeDays);
+        printf("%s | Best Before: %d | Score: %d\n", prjts[i].name, prjts[i].bestBeforeDays, prjts[i].score);
         for (int j = 0; j < prjts[i].rolesSize; ++j)
         {
             printf("-> %s %d\n", prjts[i].roles[j].skillName, prjts[i].roles[j].requiredLevel);
@@ -135,6 +137,14 @@ int compareProjects(Project *project1, Project *project2)
     //<0 The element pointed by p1 goes before the element pointed by p2
     //0  The element pointed by p1 is equivalent to the element pointed by p2
     //>0 The element pointed by p1 goes after the element pointed by p2
-    return project1->bestBeforeDays - project2->bestBeforeDays;
+    if (project1->score < project2->score)
+        return 1;
+    if (project1->score > project2->score)
+        return -1;
+    if (project1->bestBeforeDays > project2->bestBeforeDays)
+        return 1;
+    if (project1->bestBeforeDays < project2->bestBeforeDays)
+        return -1;
+    return 0;
 }
 
