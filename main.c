@@ -36,6 +36,8 @@ typedef struct
 Contributor *contributors;
 Project *projects;
 
+void printContributors(Contributor *contribs, int NContributors);
+
 int main()
 {
     FILE *fp;
@@ -52,8 +54,8 @@ int main()
     int NProjects;     // 1 <= N <= 100000
     fscanf(fp, "%d%d%*c", &NContributors, &NProjects);
 
-    contributors = (Contributor *) malloc(NContributors);
-    projects = (Project *) malloc(NProjects);
+    contributors = (Contributor *) malloc(sizeof(Contributor) * NContributors);
+    projects = (Project *) malloc(sizeof(Project) * NProjects);
 
 
     for (int i = 0; i < NContributors; ++i)
@@ -74,5 +76,19 @@ int main()
         contributors[i] = contributor;
     }
 
+    printContributors(contributors, NContributors);
     return 0;
+}
+
+void printContributors(Contributor *contribs, int NContributors)
+{
+    for (int i = 0; i < NContributors; ++i)
+    {
+        printf("%s\n", contribs[i].name);
+        for (int j = 0; j < contribs[i].skillsLen; ++j)
+        {
+            printf("-> %s %d\n", contribs[i].skills[j].name, contribs[i].skills[j].level);
+        }
+        printf("\n");
+    }
 }
